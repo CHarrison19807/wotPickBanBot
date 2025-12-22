@@ -10,7 +10,14 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsup",
     "start": "node dist/index.js",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "lint": "biome lint",
+    "prisma:generate": "pnpm prisma generate",
+    "prisma:seed": "pnpm prisma db seed",
+    "prisma:clear-migrations": "rm -rf prisma/migrations",
+    "prisma:migrate": "pnpm prisma migrate dev --name init",
+    "prisma:reset": "pnpm prisma migrate reset --force",
+    "prisma:reset:hard": "pnpm prisma:clear-migrations && pnpm prisma:reset && pnpm prisma:migrate && pnpm prisma:generate && pnpm prisma:seed"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "3.0.4",

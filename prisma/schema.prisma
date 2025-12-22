@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  discordId String  @id 
+  teamId    String?
+
+  memberOf  Team? @relation("TeamMembers", references: [roleId], fields: [teamId])
+  captainOf Team?
+}
+
+model Team {
+  roleId String @id
+
+  members User[] @relation("TeamMembers")
+
+  captain   User   @relation(fields: [captainId], references: [discordId])
+  captainId String @unique
+}
