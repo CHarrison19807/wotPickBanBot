@@ -6,7 +6,7 @@ import { getCommandFiles } from "@/utils/getCommandFiles";
 import { registerCommands } from "@/registerCommands";
 import { chatInputCommandHandler } from "@/interactionHandlers/chatInputCommandHandler";
 import type { ExtendedClient } from "@/models";
-import { buttonHandler } from "./interactionHandlers/buttons/buttonHandler";
+import { buttonHandler } from "./interactionHandlers/buttonHandler";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
