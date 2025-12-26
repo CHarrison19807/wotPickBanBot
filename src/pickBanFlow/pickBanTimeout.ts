@@ -1,15 +1,23 @@
-import { buildPickBanButtons } from "@/components/buildPickBanButtons";
-import { buildPickBanEmbed } from "@/components/buildPickBanEmbed";
-import { PICK_BAN_CONFIGS, STEP_TIMEOUT_MS } from "@/constants";
-import { StepAction, type ExtendedClient, type Map } from "@/models";
-import type { ButtonInteraction, ChatInputCommandInteraction } from "discord.js";
+import { PICK_BAN_CONFIGS } from "@/constants";
+import { StepAction, type ExtendedClient } from "@/models";
+import type { ButtonInteraction } from "discord.js";
+import { mapPickHandler } from "./buttonActions/mapPickHandler";
+import { banHandler } from "./buttonActions/banHandler";
+import { sidePickHandler } from "./buttonActions/sidePickHandler";
+import { updateInteractionResponse } from "./updateInteractionResponse";
+import { isNextStepLast } from "./isNextStepLast";
+import { handlePickBanFinish } from "./handlePickBanFinish";
 
-export const scheduleStepTimeout = (interaction: ButtonInteraction, client: ExtendedClient, channelId: string) => {
+export const scheduleStepTimeout = (interaction: ButtonInteraction) => {
+  const client = interaction.client as ExtendedClient;
+  const channelId = interaction.channelId;
+
   const pickBanState = client.pickBanStates.get(channelId);
   if (!pickBanState) return;
+  const { timeoutId, timePerAction } = pickBanState;
 
-  if (pickBanState.timeoutId) {
-    clearTimeout(pickBanState.timeoutId);
+  if (timeoutId) {
+    clearTimeout(timeoutId);
   }
 
   pickBanState.timeoutId = setTimeout(async () => {
@@ -20,65 +28,27 @@ export const scheduleStepTimeout = (interaction: ButtonInteraction, client: Exte
 
     if (!step) return;
 
-    let updatedMap: Map;
-
     switch (step.action) {
       case StepAction.SIDE_PICK:
-        const lastPickedMap = originalState.pickedMaps[originalState.pickedMaps.length - 1];
-        if (!lastPickedMap) {
-          return;
-        }
-        const randomSide = lastPickedMap.sideOptions[Math.floor(Math.random() * lastPickedMap.sideOptions.length)]!;
-
-        updatedMap = {
-          ...lastPickedMap,
-          firstSide: randomSide,
-        };
+        await sidePickHandler(interaction, true);
         break;
       case StepAction.MAP_PICK:
+        await mapPickHandler(interaction, true);
         break;
       case StepAction.BAN:
+        await banHandler(interaction, true);
         break;
       default:
         return;
     }
 
-    const actingTeamRoleId = step.actingTeam === "TEAM_A" ? originalState.teamARoleId : originalState.teamBRoleId;
+    await updateInteractionResponse(interaction);
 
-    // Auto action
-    const randomMap = originalState.availableMaps[Math.floor(Math.random() * originalState.availableMaps.length)];
-
-    if (!randomMap) return;
-
-    if (step.action === StepAction.BAN) {
-      originalState.bannedMaps.push(randomMap);
-    } else {
-      originalState.pickedMaps.push(randomMap);
+    if (isNextStepLast(interaction)) {
+      await handlePickBanFinish(interaction);
+      return;
     }
 
-    originalState.availableMaps = originalState.availableMaps.filter((m) => m.name !== randomMap.name);
-
-    originalState.currentStepIndex++;
-
-    // Update message
-    const channel = await client.channels.fetch(channelId);
-    if (!channel?.isTextBased()) return;
-
-    originalState.log = [
-      ...originalState.log,
-      `Time expired - ${randomMap.name} was ${
-        step.action === StepAction.BAN ? "banned" : "picked"
-      } randomly - <@&${actingTeamRoleId}>.`,
-    ];
-
-    await interaction.editReply({
-      content: originalState.log.join("\n"),
-      embeds: buildPickBanEmbed(originalState),
-      components: buildPickBanButtons(originalState),
-    });
-
-    scheduleStepTimeout(interaction, client, channelId);
-
-    client.pickBanStates.set(channelId, originalState);
-  }, STEP_TIMEOUT_MS);
+    scheduleStepTimeout(interaction);
+  }, timePerAction * 1000);
 };
