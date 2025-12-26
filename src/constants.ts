@@ -1,49 +1,53 @@
-import { Side, ActingTeam, StepAction, type Map } from "@/models";
+import { Side, ActingTeam, StepAction, type WorldOfTanksMap } from "@/models";
 
 export const STEP_TIMEOUT_MS = 2_000;
 
-export const MAP_POOL: Map[] = [
+export const MAP_POOL: WorldOfTanksMap[] = [
   {
     name: "Cliff",
     sideOptions: [Side.North, Side.South],
+    firstSide: undefined,
   },
   {
     name: "Ensk",
     sideOptions: [Side.North, Side.South],
+    firstSide: undefined,
   },
   {
     name: "Ghost Town",
     sideOptions: [Side.North, Side.South],
+    firstSide: undefined,
   },
   {
     name: "Himmelsdorf",
     sideOptions: [Side.North, Side.South],
+    firstSide: undefined,
   },
   {
     name: "Murovanka",
     sideOptions: [Side.North, Side.South],
+    firstSide: undefined,
   },
   {
     name: "Pilsen",
     sideOptions: [Side.North, Side.South],
+    firstSide: undefined,
   },
   {
     name: "Sand River",
     sideOptions: [Side.East, Side.West],
+    firstSide: undefined,
   },
   {
     name: "Siegfried Line",
     sideOptions: [Side.North, Side.South],
+    firstSide: undefined,
   },
   {
     name: "Westfield",
     sideOptions: [Side.East, Side.West],
+    firstSide: undefined,
   },
-    {
-    name: "Westfield2",
-    sideOptions: [Side.East, Side.West],
-  }, 
-   
 ];
 
 export const PICK_BAN_CONFIGS = {

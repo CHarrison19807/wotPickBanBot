@@ -37,10 +37,10 @@ export enum ActingTeam {
   DECIDER = "DECIDER",
 }
 
-export interface Map {
+export interface WorldOfTanksMap {
   name: string;
   sideOptions: Side[];
-  firstSide?: Side;
+  firstSide: Side | undefined;
 }
 
 export interface PickBanConfig {
@@ -64,9 +64,9 @@ export interface PickBanState {
   channelId: string;
   configKey: keyof typeof PICK_BAN_CONFIGS;
   currentStepIndex: number;
-  bannedMaps: Map[];
-  pickedMaps: Map[];
-  availableMaps: Map[];
+  bannedMaps: WorldOfTanksMap[];
+  pickedMaps: WorldOfTanksMap[];
+  availableMaps: WorldOfTanksMap[];
 
   messageId: string | null;
   timeoutId: NodeJS.Timeout | null;
