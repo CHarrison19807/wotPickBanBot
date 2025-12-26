@@ -24,15 +24,17 @@ export const getTeamCaptain = (params: GetTeamCaptainParams): GuildMember => {
   const teamMembers = users.filter((member) => member.roles.cache.has(teamRoleId));
   const captainCandidates = teamMembers.filter((member) => member.roles.cache.has(captainRoleId));
 
-  if (captainCandidates.size === 0) {
-    throw new Error(`No captain found for team role ID: ${teamRoleId}`);
-  }
-
   if (captainCandidates.size > 1) {
     throw new Error(`Multiple captains found for team role ID: ${teamRoleId}`);
   }
 
-  return captainCandidates.first()!;
+  const teamCaptain = captainCandidates.first();
+
+  if (!teamCaptain) {
+    throw new Error(`Captain not found for team role ID: ${teamRoleId}`);
+  }
+
+  return teamCaptain;
 };
 
 export const getTeamMembers = (params: GetTeamMembersParams): GuildMember[] => {

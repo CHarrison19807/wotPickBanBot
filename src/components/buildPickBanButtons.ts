@@ -25,13 +25,14 @@ export const buildPickBanButtons = (pickBanState: PickBanState) => {
     }
 
     for (const side of pickedMap.sideOptions) {
+      const mapName = pickedMap.name;
+
       row.addComponents(
-        new ButtonBuilder().setLabel(side).setStyle(buttonStyle).setCustomId(`${channelId}-${pickedMap.name}-${side}`),
+        new ButtonBuilder().setLabel(side).setStyle(buttonStyle).setCustomId(`${channelId}-${mapName}-${side}`),
       );
     }
 
     rows.push(row);
-    return rows;
   }
 
   if (stepAction === StepAction.MAP_PICK || stepAction === StepAction.BAN) {
@@ -53,8 +54,7 @@ export const buildPickBanButtons = (pickBanState: PickBanState) => {
     }
 
     rows.push(row);
-    return rows;
   }
 
-  throw new Error("Unsupported step action for button building");
+  return rows;
 };
