@@ -134,6 +134,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     log: [],
     teamACaptainId,
     teamBCaptainId,
+    isProcessing: false,
     configKey,
     timePerAction,
     currentStepIndex: 0,
@@ -151,7 +152,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   client.pickBanStates.set(channel.id, newPickBanState);
 
   channel.send({
-    content: `This is the pick/ban channel for match ${matchId} between <@&${teamARoleId}> and <@&${teamBRoleId}>.`,
+    content: `This is the pick/ban channel for match ${matchId} between <@&${teamARoleId}> and <@&${teamBRoleId}>.\nCaptains: <@${teamACaptainId}> and <@${teamBCaptainId}>.\nEach captain has ${timePerAction} seconds per pick/ban action.\nFailure to act within the time limit will result in a random map being picked/bannged.\nIf a reset is needed please ping the opposing team's captain and the opposing team's role.\nGood luck!`,
     embeds: buildPickBanEmbed(newPickBanState),
     components: buildPickBanButtons(newPickBanState),
   });

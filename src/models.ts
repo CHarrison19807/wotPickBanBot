@@ -59,6 +59,7 @@ export interface PickBanState {
   teamACaptainId: string;
   teamBCaptainId: string;
   log: string[];
+  isProcessing: boolean;
 
   timePerAction: number;
   channelId: string;

@@ -24,7 +24,17 @@ export const scheduleStepTimeout = (interaction: ButtonInteraction) => {
     const originalState = client.pickBanStates.get(channelId);
     if (!originalState) return;
 
-    const step = PICK_BAN_CONFIGS[originalState.configKey].steps[originalState.currentStepIndex];
+    const { isProcessing, configKey, currentStepIndex } = originalState;
+
+    if (isProcessing) {
+      console.log("Another action is currently being processed. Ignoring this timeout.");
+      return;
+    }
+
+    const originalStateWithProcessing = { ...originalState, isProcessing: true };
+    client.pickBanStates.set(channelId, originalStateWithProcessing);
+
+    const step = PICK_BAN_CONFIGS[configKey].steps[currentStepIndex];
 
     if (!step) return;
 
@@ -50,5 +60,11 @@ export const scheduleStepTimeout = (interaction: ButtonInteraction) => {
     }
 
     scheduleStepTimeout(interaction);
+
+    const updatedPickBanState = client.pickBanStates.get(channelId);
+    if (updatedPickBanState) {
+      const finalPickBanState = { ...updatedPickBanState, isProcessing: false };
+      client.pickBanStates.set(channelId, finalPickBanState);
+    }
   }, timePerAction * 1000);
 };

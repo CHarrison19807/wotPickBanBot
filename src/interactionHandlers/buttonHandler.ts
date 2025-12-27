@@ -21,7 +21,15 @@ export const buttonHandler = async (interaction: ButtonInteraction) => {
     return;
   }
 
-  const { currentStepIndex, configKey, timeoutId } = pickBanState;
+  const { currentStepIndex, configKey, timeoutId, isProcessing } = pickBanState;
+
+  if (isProcessing) {
+    console.log("Another action is currently being processed. Ignoring this interaction.");
+    return;
+  }
+
+  const newPickBanState = { ...pickBanState, isProcessing: true };
+  client.pickBanStates.set(channelId, newPickBanState);
 
   const currentStep = PICK_BAN_CONFIGS[configKey].steps[currentStepIndex];
 
@@ -64,4 +72,10 @@ export const buttonHandler = async (interaction: ButtonInteraction) => {
   }
 
   scheduleStepTimeout(interaction);
+
+  const updatedPickBanState = client.pickBanStates.get(channelId);
+  if (updatedPickBanState) {
+    const finalPickBanState = { ...updatedPickBanState, isProcessing: false };
+    client.pickBanStates.set(channelId, finalPickBanState);
+  }
 };
