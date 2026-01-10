@@ -1,4 +1,4 @@
-import { PICK_BAN_CONFIGS } from "@/constants";
+import { PICK_BAN_CONFIGS, TANK_BAN_NAME } from "@/constants";
 import type { PickBanState } from "@/models";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { StepAction } from "@/models";
@@ -50,6 +50,19 @@ export const buildPickBanButtons = (pickBanState: PickBanState) => {
           .setLabel(mapName)
           .setStyle(buttonStyle)
           .setCustomId(`${channelId}-${mapName}-${stepAction}`),
+      );
+    }
+    if (stepAction === StepAction.BAN) {
+      if (row.components.length === 5) {
+        rows.push(row);
+        row = new ActionRowBuilder<ButtonBuilder>();
+      }
+
+      row.addComponents(
+        new ButtonBuilder()
+          .setLabel(`Tank Ban`)
+          .setStyle(ButtonStyle.Danger)
+          .setCustomId(`${channelId}-${TANK_BAN_NAME}-${stepAction}`),
       );
     }
 

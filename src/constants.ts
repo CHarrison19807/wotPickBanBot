@@ -1,6 +1,6 @@
 import { Side, ActingTeam, StepAction, type WorldOfTanksMap } from "@/models";
 
-export const STEP_TIMEOUT_MS = 2_000;
+export const TANK_BAN_NAME = "Tank";
 
 export const MAP_POOL: WorldOfTanksMap[] = [
   {

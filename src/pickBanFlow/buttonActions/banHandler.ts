@@ -1,6 +1,7 @@
 import type { ExtendedClient } from "@/models";
 import type { ButtonInteraction } from "discord.js";
 import { automaticBanHandler } from "../automaticActions/automaticBanHandler";
+import { TANK_BAN_NAME } from "@/constants";
 
 export const banHandler = async (interaction: ButtonInteraction, isAutomatic = false) => {
   const client = interaction.client as ExtendedClient;
@@ -20,6 +21,16 @@ export const banHandler = async (interaction: ButtonInteraction, isAutomatic = f
   const { currentStepIndex, availableMaps, bannedMaps, log } = currentPickBanState;
 
   const [_channelId, mapName, _stepAction] = customId.split("-");
+  if (mapName === TANK_BAN_NAME) {
+    const newPickBanState = {
+      ...currentPickBanState,
+      currentStepIndex: currentStepIndex + 1,
+      log: [...log, `<@${user.id}> banned a tank, type the name of the tank in the channel.`],
+    };
+
+    client.pickBanStates.set(channelId, newPickBanState);
+    return;
+  }
   const bannedMap = availableMaps.find((m) => m.name === mapName);
 
   if (!bannedMap) {
