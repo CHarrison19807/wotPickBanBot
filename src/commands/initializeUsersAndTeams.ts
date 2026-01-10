@@ -1,7 +1,13 @@
 import { createTeam, deleteAllTeams } from "@/prisma/team";
 import { createUser, deleteAllUsers } from "@/prisma/user";
 import { formatTeamData, getTeamCaptain, getTeamMembers, getTeamRoles } from "@/utils/initializeHelpers";
-import { type ChatInputCommandInteraction, type GuildMember, MessageFlags, SlashCommandBuilder } from "discord.js";
+import {
+  type ChatInputCommandInteraction,
+  type GuildMember,
+  MessageFlags,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+} from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName("initialiaze_users_and_teams")
@@ -31,7 +37,8 @@ export const data = new SlashCommandBuilder()
       .setDescription("The number of players per team.")
       .setRequired(true)
       .setMinValue(1),
-  );
+  )
+  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   const captainRoleId = interaction.options.getRole("captain_role", true).id;

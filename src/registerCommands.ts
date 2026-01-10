@@ -43,7 +43,7 @@ export const registerCommands = async () => {
 
   console.log(`Registering ${commands.length} application commands...`);
 
-  const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
+  const data = await rest.put(Routes.applicationCommands(clientId), { body: commands });
 
   console.log(`Successfully registered ${(data as unknown[]).length} commands.`);
 };

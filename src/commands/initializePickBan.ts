@@ -40,9 +40,11 @@ export const data = new SlashCommandBuilder()
       .setDescription("The time (in seconds) allocated for each pick/ban action (Min 10 seconds).")
       .setRequired(true)
       .setMinValue(10),
-  );
+  )
+  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
+  await interaction.deferReply();
   const teamARoleId = interaction.options.getRole("team_a_role", true).id;
   const teamBRoleId = interaction.options.getRole("team_b_role", true).id;
   const configKey = interaction.options.getString("best_of_n", true) as keyof typeof PICK_BAN_CONFIGS;
@@ -71,10 +73,22 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     return;
   }
 
+  let category = guild.channels.cache.find((c) => c.type === ChannelType.GuildCategory && c.name === "Matches");
+
+  if (!category) {
+    category = await guild.channels.create({
+      name: "Matches",
+      type: ChannelType.GuildCategory,
+    });
+  }
+
+  const matchesCategoryId = category.id;
+
   const matchId = createId();
   const channel = await guild.channels.create({
     name: `match-${matchId}`,
     type: ChannelType.GuildText,
+    parent: matchesCategoryId,
     permissionOverwrites: [
       {
         id: guild.roles.everyone.id,
@@ -156,7 +170,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     embeds: buildPickBanEmbed(newPickBanState),
     components: buildPickBanButtons(newPickBanState),
   });
-  await interaction.reply({
+  await interaction.editReply({
     content: `Pick ban channel created: ${channel.toString()}`,
   });
 };

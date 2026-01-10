@@ -1,5 +1,5 @@
-import { StepAction, type ExtendedClient } from "@/models";
-import type { ButtonInteraction } from "discord.js";
+import { ActingTeam, StepAction, type ExtendedClient } from "@/models";
+import { MessageFlags, type ButtonInteraction } from "discord.js";
 import { PICK_BAN_CONFIGS } from "@/constants";
 import { updateInteractionResponse } from "@/pickBanFlow/updateInteractionResponse";
 import { isNextStepLast } from "@/pickBanFlow/isNextStepLast";
@@ -10,7 +10,7 @@ import { mapPickHandler } from "@/pickBanFlow/buttonActions/mapPickHandler";
 import { sidePickHandler } from "@/pickBanFlow/buttonActions/sidePickHandler";
 
 export const buttonHandler = async (interaction: ButtonInteraction) => {
-  const { channelId } = interaction;
+  const { channelId, user } = interaction;
   const client = interaction.client as ExtendedClient;
   const pickBanState = client.pickBanStates.get(channelId);
 
@@ -21,7 +21,25 @@ export const buttonHandler = async (interaction: ButtonInteraction) => {
     return;
   }
 
-  const { currentStepIndex, configKey, timeoutId, isProcessing } = pickBanState;
+  const { currentStepIndex, configKey, timeoutId, isProcessing, teamACaptainId, teamBCaptainId } = pickBanState;
+  const currentStep = PICK_BAN_CONFIGS[configKey].steps[currentStepIndex];
+
+  if (!currentStep) {
+    await interaction.reply({ content: "Invalid pick/ban step.", ephemeral: true });
+    return;
+  }
+
+  const currentTeamActing = currentStep.actingTeam;
+  const userId = user.id;
+  const actingTeamCaptainId = currentTeamActing === ActingTeam.TEAM_A ? teamACaptainId : teamBCaptainId;
+
+  if (userId !== actingTeamCaptainId) {
+    await interaction.reply({
+      content: `Only the captain of ${currentTeamActing === ActingTeam.TEAM_A ? "Team A" : "Team B"} can perform this action.`,
+      flags: MessageFlags.Ephemeral,
+    });
+    return;
+  }
 
   if (isProcessing) {
     console.log("Another action is currently being processed. Ignoring this interaction.");
@@ -30,13 +48,6 @@ export const buttonHandler = async (interaction: ButtonInteraction) => {
 
   const newPickBanState = { ...pickBanState, isProcessing: true };
   client.pickBanStates.set(channelId, newPickBanState);
-
-  const currentStep = PICK_BAN_CONFIGS[configKey].steps[currentStepIndex];
-
-  if (!currentStep) {
-    await interaction.reply({ content: "Invalid pick/ban step.", ephemeral: true });
-    return;
-  }
 
   if (timeoutId) {
     clearTimeout(timeoutId);
