@@ -1,5 +1,5 @@
-import { createTeam, deleteAllTeams } from "../prisma/team";
-import { createUser, deleteAllUsers } from "../prisma/user";
+import { createTeam, deleteAllTeams, getAllTeams } from "../prisma/team";
+import { createUser, deleteAllUsers, getAllUsers } from "../prisma/user";
 import { formatTeamData, getTeamCaptain, getTeamMembers, getTeamRoles } from "@/utils/initializeHelpers";
 import {
   type ChatInputCommandInteraction,
@@ -128,6 +128,12 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
     interactionContent += `\nCreated team for role "${teamRole.name}" with captain "${teamCaptain.user.tag}".`;
   }
+
+  const totalUsers = await getAllUsers();
+  const totalTeams = await getAllTeams();
+  
+  interactionContent = `Initialization complete! Created ${totalUsers.length} users and ${totalTeams.length} teams.\n` + interactionContent;
+  
 
   await interaction.editReply({
     content: interactionContent,

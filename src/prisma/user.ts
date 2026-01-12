@@ -8,3 +8,7 @@ export const createUser = async (data: Prisma.UserCreateInput) => {
 export const deleteAllUsers = async () => {
   return prisma.user.deleteMany();
 };
+
+export const getAllUsers = async () => {
+  return prisma.user.findMany();
+};

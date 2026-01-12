@@ -12,3 +12,7 @@ export const deleteAllTeams = async () => {
 export const getTeam = async (roleId: string) => {
   return prisma.team.findUnique({ where: { roleId }, include: { members: true } });
 };
+
+export const getAllTeams = async () => {
+  return prisma.team.findMany({ include: { members: true } });
+};
