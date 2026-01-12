@@ -55,28 +55,26 @@ export const buttonHandler = async (interaction: ButtonInteraction) => {
     client.pickBanStates.set(channelId, pickBanState);
   }
   try {
+    switch (currentStep.action) {
+      case StepAction.SIDE_PICK: {
+        await sidePickHandler(interaction);
+        break;
+      }
 
-  switch (currentStep.action) {
-    case StepAction.SIDE_PICK: {
-      await sidePickHandler(interaction);
-      break;
+      case StepAction.MAP_PICK: {
+        await mapPickHandler(interaction);
+        break;
+      }
+      case StepAction.BAN: {
+        console.log(interaction.id);
+        await banHandler(interaction);
+        break;
+      }
+      default: {
+        throw new Error("Unknown action type in pick/ban flow.");
+      }
     }
-
-    case StepAction.MAP_PICK: {
-      await mapPickHandler(interaction);
-      break;
-    }
-    case StepAction.BAN: {
-      console.log(interaction.id);
-      await banHandler(interaction);
-      break;
-    }
-    default: {
-      throw new Error("Unknown action type in pick/ban flow.");
-    }
-  }
-
-} catch (error) {
+  } catch (error) {
     client.pickBanStates.set(channelId, { ...pickBanState, isProcessing: false });
     console.error("Error during button handling:", error);
     return;

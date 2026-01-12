@@ -14,7 +14,7 @@ export const automaticMapPickHandler = async (interaction: ButtonInteraction) =>
 
   const { currentStepIndex, availableMaps, pickedMaps, log } = currentPickBanState;
 
-  const randomAvailableMap = availableMaps[Math.floor(Math.random() * availableMaps.length)]!;
+  const randomAvailableMap = availableMaps[Math.floor(Math.random() * availableMaps.length)];
 
   if (!randomAvailableMap) {
     await interaction.reply({ content: "No available maps found for automatic pick.", ephemeral: true });

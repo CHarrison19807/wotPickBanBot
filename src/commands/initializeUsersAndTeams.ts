@@ -36,7 +36,7 @@ export const data = new SlashCommandBuilder()
       .setDescription("The number of players per team.")
       .setRequired(true)
       .setMinValue(1),
-  )
+  );
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   await interaction.deferReply();
@@ -129,9 +129,10 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
   const totalUsers = await getAllUsers();
   const totalTeams = await getAllTeams();
-  
-  interactionContent = `Initialization complete! Created ${totalUsers.length} users and ${totalTeams.length} teams.\n` + interactionContent;
-  
+
+  interactionContent =
+    `Initialization complete! Created ${totalUsers.length} users and ${totalTeams.length} teams.\n` +
+    interactionContent;
 
   await interaction.editReply({
     content: interactionContent,

@@ -16,7 +16,7 @@ export const automaticBanHandler = async (interaction: ButtonInteraction) => {
 
   const { currentStepIndex, availableMaps, bannedMaps, log } = currentPickBanState;
 
-  const randomAvailableMap = availableMaps[Math.floor(Math.random() * availableMaps.length)]!;
+  const randomAvailableMap = availableMaps[Math.floor(Math.random() * availableMaps.length)];
 
   if (!randomAvailableMap) {
     await interaction.reply({ content: "No available maps found for automatic ban.", ephemeral: true });

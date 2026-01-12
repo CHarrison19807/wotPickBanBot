@@ -60,7 +60,7 @@ export const buildPickBanButtons = (pickBanState: PickBanState) => {
 
       row.addComponents(
         new ButtonBuilder()
-          .setLabel(`Tank Ban`)
+          .setLabel("Tank Ban")
           .setStyle(ButtonStyle.Danger)
           .setCustomId(`${channelId}-${TANK_BAN_NAME}-${stepAction}`),
       );

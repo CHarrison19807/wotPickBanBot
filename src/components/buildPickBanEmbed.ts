@@ -30,7 +30,7 @@ export const buildPickBanEmbed = (pickBanState: PickBanState) => {
     actionText = "Pick/Ban completed.";
   }
 
-  const description = log.join("\n") + `\n\n**${actionText}**`;
+  const description = `${log.join("\n")}\n\n**${actionText}**`;
   const embed = {
     title: `Pick/Ban for Match ${channelId}`,
     description,

@@ -9,11 +9,10 @@ export const registerCommands = async () => {
   const token = process.env.DISCORD_TOKEN;
   const clientId = process.env.CLIENT_ID;
 
-  if (!token || !clientId ) {
+  if (!token || !clientId) {
     throw new Error("Missing environment variables.");
   }
 
-  // ESM-safe __dirname
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
@@ -23,7 +22,6 @@ export const registerCommands = async () => {
   const commands: Command[] = [];
 
   for (const filePath of commandFiles) {
-    // ignore index files
     if (filePath.endsWith("index.ts")) {
       continue;
     }

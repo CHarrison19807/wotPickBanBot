@@ -4,7 +4,6 @@ import { getTeam } from "@/prisma/team";
 import {
   ChannelType,
   type ChatInputCommandInteraction,
-  MessageFlags,
   OverwriteType,
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -40,7 +39,7 @@ export const data = new SlashCommandBuilder()
       .setDescription("The time (in seconds) allocated for each pick/ban action (Min 10 seconds).")
       .setRequired(true)
       .setMinValue(10),
-  )
+  );
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   await interaction.deferReply();
@@ -184,6 +183,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     components: buildPickBanButtons(newPickBanState),
   });
   await interaction.editReply({
-    content: `Pick ban channel created: ${channel.toString()}`,
+    content: `Match between Team A: <@&${teamARoleId}> and Team B: <@&${teamBRoleId}> pick/ban channel created: ${channel.toString()}`,
   });
 };
