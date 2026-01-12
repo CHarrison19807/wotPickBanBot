@@ -6,6 +6,7 @@ import {
   type GuildMember,
   PermissionFlagsBits,
   SlashCommandBuilder,
+  TextChannel,
 } from "discord.js";
 
 export const data = new SlashCommandBuilder()
@@ -86,9 +87,9 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
   const usersInitializedSet = new Set<string>();
 
+  const channel = interaction.channel as TextChannel;
   for (const teamRole of teamRoles) {
     const teamRoleId = teamRole.id;
-
     const teamMembers = getTeamMembers({ teamRoleId, users });
 
     if (teamMembers.length !== playersPerTeam) {
@@ -113,7 +114,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
       usersInitializedSet.add(member.id);
       await createUser({ discordId: member.id });
-      // interactionContent += `\nCreated user for member "${member.user.tag}".`;
+      channel.send(`User "${member.user.tag}" has been initialized.`);
     }
 
     const teamData = {
@@ -125,6 +126,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     const formattedTeamData = formatTeamData(teamData);
 
     await createTeam(formattedTeamData);
+    channel.send(`Team "${teamRole.name}" has been initialized with captain "${teamCaptain.user.tag}".`);
 
     interactionContent += `\nCreated team for role "${teamRole.name}" with captain "${teamCaptain.user.tag}".`;
   }
