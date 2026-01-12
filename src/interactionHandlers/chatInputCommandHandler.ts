@@ -1,6 +1,6 @@
 import { MessageFlags, type Client, type Collection, type ChatInputCommandInteraction } from "discord.js";
 import "dotenv/config";
-import type { Command } from "@/models";
+import type { Command } from "../models";
 
 interface ExtendedClient extends Client {
   commands: Collection<string, Command>;

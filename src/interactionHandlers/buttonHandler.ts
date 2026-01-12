@@ -1,13 +1,13 @@
-import { ActingTeam, StepAction, type ExtendedClient } from "@/models";
+import { ActingTeam, StepAction, type ExtendedClient } from "../models";
 import { MessageFlags, type ButtonInteraction } from "discord.js";
-import { PICK_BAN_CONFIGS } from "@/constants";
-import { updateInteractionResponse } from "@/pickBanFlow/updateInteractionResponse";
-import { isNextStepLast } from "@/pickBanFlow/isNextStepLast";
-import { handlePickBanFinish } from "@/pickBanFlow/handlePickBanFinish";
-import { scheduleStepTimeout } from "@/pickBanFlow/pickBanTimeout";
-import { banHandler } from "@/pickBanFlow/buttonActions/banHandler";
-import { mapPickHandler } from "@/pickBanFlow/buttonActions/mapPickHandler";
-import { sidePickHandler } from "@/pickBanFlow/buttonActions/sidePickHandler";
+import { PICK_BAN_CONFIGS } from "../constants";
+import { updateInteractionResponse } from "../pickBanFlow/updateInteractionResponse";
+import { isNextStepLast } from "../pickBanFlow/isNextStepLast";
+import { handlePickBanFinish } from "../pickBanFlow/handlePickBanFinish";
+import { scheduleStepTimeout } from "../pickBanFlow/pickBanTimeout";
+import { banHandler } from "../pickBanFlow/buttonActions/banHandler";
+import { mapPickHandler } from "../pickBanFlow/buttonActions/mapPickHandler";
+import { sidePickHandler } from "../pickBanFlow/buttonActions/sidePickHandler";
 
 export const buttonHandler = async (interaction: ButtonInteraction) => {
   const { channelId, user } = interaction;

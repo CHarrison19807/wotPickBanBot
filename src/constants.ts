@@ -1,4 +1,4 @@
-import { Side, ActingTeam, StepAction, type WorldOfTanksMap } from "@/models";
+import { Side, ActingTeam, StepAction, type WorldOfTanksMap } from "./models";
 
 export const TANK_BAN_NAME = "Tank";
 

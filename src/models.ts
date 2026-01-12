@@ -72,3 +72,13 @@ export interface PickBanState {
   messageId: string | null;
   timeoutId: NodeJS.Timeout | null;
 }
+
+export interface PlayerRecord {
+  timeStamp: string;
+  discordId: string;
+  wotAccountInfo: string;
+  region: string;
+  availability: string;
+  captainWillingness: string;
+  liquipediaLink: string;
+}

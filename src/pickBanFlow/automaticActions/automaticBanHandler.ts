@@ -1,4 +1,4 @@
-import type { ExtendedClient } from "@/models";
+import type { ExtendedClient } from "../../models";
 import type { ButtonInteraction } from "discord.js";
 
 export const automaticBanHandler = async (interaction: ButtonInteraction) => {

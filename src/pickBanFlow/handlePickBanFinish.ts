@@ -1,4 +1,4 @@
-import type { ExtendedClient } from "@/models";
+import type { ExtendedClient } from "../models";
 import type { ButtonInteraction } from "discord.js";
 import { updateInteractionResponse } from "./updateInteractionResponse";
 

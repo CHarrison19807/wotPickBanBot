@@ -1,6 +1,6 @@
 import type { Collection, GuildMember, Role } from "discord.js";
-import type { TeamData } from "@/models";
-import type { Prisma } from "@/prisma/generated";
+import type { TeamData } from "../models";
+import type { Prisma } from "../prisma/generated";
 
 interface GetTeamCaptainParams {
   teamRoleId: string;

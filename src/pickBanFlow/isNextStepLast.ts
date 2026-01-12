@@ -1,5 +1,5 @@
-import { PICK_BAN_CONFIGS } from "@/constants";
-import type { ExtendedClient } from "@/models";
+import { PICK_BAN_CONFIGS } from "../constants";
+import type { ExtendedClient } from "../models";
 import type { ButtonInteraction } from "discord.js";
 
 export const isNextStepLast = (interaction: ButtonInteraction) => {

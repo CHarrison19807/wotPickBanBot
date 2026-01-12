@@ -1,5 +1,5 @@
-import { MAP_POOL, PICK_BAN_CONFIGS } from "@/constants";
-import type { ExtendedClient, PickBanState } from "@/models";
+import { MAP_POOL, PICK_BAN_CONFIGS } from "../constants";
+import type { ExtendedClient, PickBanState } from "../models";
 import { getTeam } from "@/prisma/team";
 import {
   ChannelType,

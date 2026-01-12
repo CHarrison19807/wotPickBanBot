@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma";
+import { prisma } from "./";
 import type { Prisma } from "./generated";
 
 export const createUser = async (data: Prisma.UserCreateInput) => {

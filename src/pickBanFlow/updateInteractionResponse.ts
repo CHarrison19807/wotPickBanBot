@@ -1,6 +1,6 @@
-import { buildPickBanButtons } from "@/components/buildPickBanButtons";
-import { buildPickBanEmbed } from "@/components/buildPickBanEmbed";
-import type { ExtendedClient } from "@/models";
+import { buildPickBanButtons } from "../components/buildPickBanButtons";
+import { buildPickBanEmbed } from "../components/buildPickBanEmbed";
+import type { ExtendedClient } from "../models";
 import type { ButtonInteraction, ChatInputCommandInteraction } from "discord.js";
 
 export const updateInteractionResponse = async (interaction: ButtonInteraction | ChatInputCommandInteraction) => {

@@ -1,5 +1,5 @@
-import { PICK_BAN_CONFIGS } from "@/constants";
-import { ActingTeam, StepAction, type PickBanState } from "@/models";
+import { PICK_BAN_CONFIGS } from "../constants";
+import { ActingTeam, StepAction, type PickBanState } from "../models";
 
 export const buildPickBanEmbed = (pickBanState: PickBanState) => {
   const { log, channelId, configKey, currentStepIndex, teamACaptainId, teamBCaptainId } = pickBanState;

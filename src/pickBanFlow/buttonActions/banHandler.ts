@@ -1,7 +1,7 @@
-import type { ExtendedClient } from "@/models";
+import type { ExtendedClient } from "../../models";
 import { MessageFlags, type ButtonInteraction, type TextChannel } from "discord.js";
 import { automaticBanHandler } from "../automaticActions/automaticBanHandler";
-import { TANK_BAN_NAME } from "@/constants";
+import { TANK_BAN_NAME } from "../../constants";
 
 export const banHandler = async (interaction: ButtonInteraction, isAutomatic = false) => {
   const client = interaction.client as ExtendedClient;

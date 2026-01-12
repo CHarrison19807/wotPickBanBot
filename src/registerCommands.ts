@@ -2,8 +2,8 @@ import { REST, Routes } from "discord.js";
 import "dotenv/config";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { getCommandFiles } from "@/utils/getCommandFiles";
-import type { Command } from "@/models";
+import { getCommandFiles } from "./utils/getCommandFiles";
+import type { Command } from "./models";
 
 export const registerCommands = async () => {
   const token = process.env.DISCORD_TOKEN;

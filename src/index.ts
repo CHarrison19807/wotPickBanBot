@@ -2,10 +2,10 @@ import { Client, GatewayIntentBits, Collection, Events } from "discord.js";
 import "dotenv/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getCommandFiles } from "@/utils/getCommandFiles";
-import { registerCommands } from "@/registerCommands";
-import { chatInputCommandHandler } from "@/interactionHandlers/chatInputCommandHandler";
-import type { ExtendedClient } from "@/models";
+import { getCommandFiles } from "./utils/getCommandFiles";
+import { registerCommands } from "./registerCommands";
+import { chatInputCommandHandler } from "./interactionHandlers/chatInputCommandHandler";
+import type { ExtendedClient } from "./models";
 import { buttonHandler } from "./interactionHandlers/buttonHandler";
 
 const __filename = fileURLToPath(import.meta.url);

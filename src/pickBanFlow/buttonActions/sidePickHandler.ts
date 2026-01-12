@@ -1,4 +1,4 @@
-import { Side, type ExtendedClient } from "@/models";
+import { Side, type ExtendedClient } from "../../models";
 import type { ButtonInteraction } from "discord.js";
 import { automaticSidePickHandler } from "../automaticActions/automaticSidePickHandler";
 

@@ -1,5 +1,5 @@
-import { PICK_BAN_CONFIGS } from "@/constants";
-import { StepAction, type ExtendedClient } from "@/models";
+import { PICK_BAN_CONFIGS } from "../constants";
+import { StepAction, type ExtendedClient } from "../models";
 import type { ButtonInteraction } from "discord.js";
 import { mapPickHandler } from "./buttonActions/mapPickHandler";
 import { banHandler } from "./buttonActions/banHandler";

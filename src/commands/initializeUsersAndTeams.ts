@@ -1,5 +1,5 @@
-import { createTeam, deleteAllTeams } from "@/prisma/team";
-import { createUser, deleteAllUsers } from "@/prisma/user";
+import { createTeam, deleteAllTeams } from "../prisma/team";
+import { createUser, deleteAllUsers } from "../prisma/user";
 import { formatTeamData, getTeamCaptain, getTeamMembers, getTeamRoles } from "@/utils/initializeHelpers";
 import {
   type ChatInputCommandInteraction,

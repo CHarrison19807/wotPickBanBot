@@ -1,7 +1,7 @@
-import { PICK_BAN_CONFIGS, TANK_BAN_NAME } from "@/constants";
-import type { PickBanState } from "@/models";
+import { PICK_BAN_CONFIGS, TANK_BAN_NAME } from "../constants";
+import type { PickBanState } from "../models";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { StepAction } from "@/models";
+import { StepAction } from "../models";
 
 export const buildPickBanButtons = (pickBanState: PickBanState) => {
   const rows: ActionRowBuilder<ButtonBuilder>[] = [];
