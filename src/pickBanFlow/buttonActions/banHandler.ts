@@ -1,5 +1,5 @@
 import type { ExtendedClient } from "@/models";
-import type { ButtonInteraction } from "discord.js";
+import { MessageFlags, type ButtonInteraction, type TextChannel } from "discord.js";
 import { automaticBanHandler } from "../automaticActions/automaticBanHandler";
 import { TANK_BAN_NAME } from "@/constants";
 
@@ -22,11 +22,28 @@ export const banHandler = async (interaction: ButtonInteraction, isAutomatic = f
 
   const [_channelId, mapName, _stepAction] = customId.split("-");
   if (mapName === TANK_BAN_NAME) {
+    const channel = interaction.channel as TextChannel;
+
+    const messages = await channel.messages.fetch({ limit: 1 });
+    const lastMessage = messages.first();
+
+    if (lastMessage?.author.id !== user.id) {
+      await interaction.reply({
+        content: "The team captain must type the tank name before clicking the 'Tank Ban' button.",
+        flags: MessageFlags.Ephemeral,
+      });
+      throw new Error("Team captain did not type the tank name before clicking the 'Tank Ban' button.");
+    }
+
+    const tankName = lastMessage.content.trim();
+
     const newPickBanState = {
       ...currentPickBanState,
       currentStepIndex: currentStepIndex + 1,
-      log: [...log, `<@${user.id}> banned a tank, type the name of the tank in the channel.`],
+      log: [...log, `<@${user.id}> banned a tank: ${tankName}.`],
     };
+
+    lastMessage.delete().catch((err) => console.error("Failed to delete tank ban message:", err));
 
     client.pickBanStates.set(channelId, newPickBanState);
     return;

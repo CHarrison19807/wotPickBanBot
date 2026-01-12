@@ -54,6 +54,7 @@ export const buttonHandler = async (interaction: ButtonInteraction) => {
     pickBanState.timeoutId = null;
     client.pickBanStates.set(channelId, pickBanState);
   }
+  try {
 
   switch (currentStep.action) {
     case StepAction.SIDE_PICK: {
@@ -66,12 +67,19 @@ export const buttonHandler = async (interaction: ButtonInteraction) => {
       break;
     }
     case StepAction.BAN: {
+      console.log(interaction.id);
       await banHandler(interaction);
       break;
     }
     default: {
-      console.log("default case reached in buttonHandler");
+      throw new Error("Unknown action type in pick/ban flow.");
     }
+  }
+
+} catch (error) {
+    client.pickBanStates.set(channelId, { ...pickBanState, isProcessing: false });
+    console.error("Error during button handling:", error);
+    return;
   }
 
   await updateInteractionResponse(interaction);
