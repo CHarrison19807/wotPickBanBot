@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsup",
-    "start": "node dist/index.js",
+    "start": "tsx src/index.ts",
     "format": "biome format --write",
     "lint": "biome lint",
     "prisma:generate": "pnpm prisma generate",
