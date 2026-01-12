@@ -6,7 +6,6 @@ import {
   type GuildMember,
   PermissionFlagsBits,
   SlashCommandBuilder,
-  TextChannel,
 } from "discord.js";
 
 export const data = new SlashCommandBuilder()
@@ -87,13 +86,12 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
   const usersInitializedSet = new Set<string>();
 
-  const channel = interaction.channel as TextChannel;
   for (const teamRole of teamRoles) {
     const teamRoleId = teamRole.id;
     const teamMembers = getTeamMembers({ teamRoleId, users });
 
     if (teamMembers.length !== playersPerTeam) {
-      interactionContent += `\nTeam "${teamRole.name}" expected to have ${playersPerTeam} members, but found ${teamMembers.length}.`;
+      interactionContent += `\nTeam "${teamRole.name}" expected to have ${playersPerTeam} members, but found ${teamMembers.length}. Skipping initialization for this team.`;
       continue;
     }
 
@@ -102,19 +100,18 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     try {
       teamCaptain = getTeamCaptain({ teamRoleId, captainRoleId, users });
     } catch (error) {
-      interactionContent += `\nError finding captain for team "${teamRole.name}": ${(error as Error).message}`;
+      interactionContent += `\nError finding captain for team "${teamRole.name}": ${(error as Error).message}. Skipping initialization for this team.`;
       continue;
     }
 
     for (const member of teamMembers) {
       if (usersInitializedSet.has(member.id)) {
-        interactionContent += `\nUser "${member.user.tag}" is already initialized as a member of another team.`;
+        interactionContent += `\nUser "${member.user.tag}" is already initialized as a member of another team. Skipping duplicate initialization.`;
         continue;
       }
 
       usersInitializedSet.add(member.id);
       await createUser({ discordId: member.id });
-      channel.send(`User "${member.user.tag}" has been initialized.`);
     }
 
     const teamData = {
@@ -126,7 +123,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     const formattedTeamData = formatTeamData(teamData);
 
     await createTeam(formattedTeamData);
-    channel.send(`Team "${teamRole.name}" has been initialized with captain "${teamCaptain.user.tag}".`);
 
     interactionContent += `\nCreated team for role "${teamRole.name}" with captain "${teamCaptain.user.tag}".`;
   }
