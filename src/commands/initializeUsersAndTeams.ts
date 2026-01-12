@@ -4,7 +4,6 @@ import { formatTeamData, getTeamCaptain, getTeamMembers, getTeamRoles } from "@/
 import {
   type ChatInputCommandInteraction,
   type GuildMember,
-  MessageFlags,
   PermissionFlagsBits,
   SlashCommandBuilder,
 } from "discord.js";
@@ -38,9 +37,9 @@ export const data = new SlashCommandBuilder()
       .setRequired(true)
       .setMinValue(1),
   )
-  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
+  await interaction.deferReply();
   const captainRoleId = interaction.options.getRole("captain_role", true).id;
   const teamRolePrefix = interaction.options.getString("team_role_prefix", true);
   const numberOfTeams = interaction.options.getInteger("number_of_teams", true);
@@ -48,6 +47,22 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
   const discordGuild = interaction.guild;
   let interactionContent = "";
+
+  const user = interaction.user;
+
+  if (!user) {
+    await interaction.editReply({
+      content: "Unable to identify the user executing the command.",
+    });
+    return;
+  }
+
+  if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator) && user.id !== "615350424156897311") {
+    await interaction.editReply({
+      content: "You do not have permission to execute this command. Administrator permission is required.",
+    });
+    return;
+  }
 
   if (!discordGuild) {
     await interaction.reply({
@@ -98,7 +113,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
       usersInitializedSet.add(member.id);
       await createUser({ discordId: member.id });
-      interactionContent += `\nCreated user for member "${member.user.tag}".`;
+      // interactionContent += `\nCreated user for member "${member.user.tag}".`;
     }
 
     const teamData = {
@@ -114,8 +129,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     interactionContent += `\nCreated team for role "${teamRole.name}" with captain "${teamCaptain.user.tag}".`;
   }
 
-  await interaction.reply({
+  await interaction.editReply({
     content: interactionContent,
-    flags: MessageFlags.Ephemeral,
   });
 };

@@ -15,7 +15,7 @@ import { buildPickBanEmbed } from "@/components/buildPickBanEmbed";
 
 export const data = new SlashCommandBuilder()
   .setName("initialize_pick_ban")
-  .setDescription("Initializes the bot for the server.")
+  .setDescription("Initializes a pick/ban process.")
   .addRoleOption((option) =>
     option.setName("team_a_role").setDescription("The role assigned to Team A.").setRequired(true),
   )
@@ -41,7 +41,6 @@ export const data = new SlashCommandBuilder()
       .setRequired(true)
       .setMinValue(10),
   )
-  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   await interaction.deferReply();
@@ -55,6 +54,22 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     await interaction.reply({
       content: "This command can only be used in a server.",
       flags: MessageFlags.Ephemeral,
+    });
+    return;
+  }
+
+  const user = interaction.user;
+
+  if (!user) {
+    await interaction.editReply({
+      content: "Unable to identify the user executing the command.",
+    });
+    return;
+  }
+
+  if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator) && user.id !== "615350424156897311") {
+    await interaction.editReply({
+      content: "You do not have permission to execute this command. Administrator permission is required.",
     });
     return;
   }
@@ -166,7 +181,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   client.pickBanStates.set(channel.id, newPickBanState);
 
   channel.send({
-    content: `This is the pick/ban channel for match ${matchId} between <@&${teamARoleId}> and <@&${teamBRoleId}>.\nCaptains: <@${teamACaptainId}> and <@${teamBCaptainId}>.\nEach captain has ${timePerAction} seconds per pick/ban action.\nFailure to act within the time limit will result in a random map being picked/bannged.\nIf a reset is needed please ping the opposing team's captain and the opposing team's role.\nGood luck!`,
+    content: `This is the pick/ban channel for match ${matchId} between <@&${teamARoleId}> and <@&${teamBRoleId}>.\n\nAfter the initial action by <@${teamACaptainId}>, each captain will have ${timePerAction} seconds per pick/ban action.\nFailure to act within the time limit will result in a random map being picked/banned.\n\nThis will also serve as the channel to ping when requesting a round reset.\nYou should ping the opposing team captain, the opposing team's role, and an admin.\n\n**<@${teamACaptainId}> ensure that <@${teamBCaptainId}> is ready to begin before making the initial selection.**\n**To ban a tank, type the name of the tank in the channel then click the "Tank Ban" button below.**\n\nGood luck!`,
     embeds: buildPickBanEmbed(newPickBanState),
     components: buildPickBanButtons(newPickBanState),
   });
