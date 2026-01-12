@@ -2,6 +2,9 @@ import { Side, ActingTeam, StepAction, type WorldOfTanksMap } from "@/models";
 
 export const TANK_BAN_NAME = "Tank";
 
+export const LIQUIPEDIA_BASE_URL = "https://liquipedia.net/worldoftanks/";
+export const TOMATOGG_BASE_URL = "https://tomato.gg/stats/";
+
 export const MAP_POOL: WorldOfTanksMap[] = [
   {
     name: "Cliff",
@@ -39,13 +42,13 @@ export const MAP_POOL: WorldOfTanksMap[] = [
     firstSide: undefined,
   },
   {
-    name: "Siegfried Line",
+    name: "Tundra",
     sideOptions: [Side.North, Side.South],
     firstSide: undefined,
   },
   {
-    name: "Westfield",
-    sideOptions: [Side.East, Side.West],
+    name: "Ruinberg",
+    sideOptions: [Side.North, Side.South],
     firstSide: undefined,
   },
 ];
