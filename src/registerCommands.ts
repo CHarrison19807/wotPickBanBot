@@ -8,9 +8,8 @@ import type { Command } from "./models";
 export const registerCommands = async () => {
   const token = process.env.DISCORD_TOKEN;
   const clientId = process.env.CLIENT_ID;
-  const guildId = process.env.GUILD_ID;
 
-  if (!token || !clientId || !guildId) {
+  if (!token || !clientId ) {
     throw new Error("Missing environment variables.");
   }
 
