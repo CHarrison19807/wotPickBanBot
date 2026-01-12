@@ -51,9 +51,8 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   const guild = interaction.guild;
 
   if (!guild) {
-    await interaction.reply({
+    await interaction.editReply({
       content: "This command can only be used in a server.",
-      flags: MessageFlags.Ephemeral,
     });
     return;
   }
@@ -80,10 +79,9 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   const teamBCaptainId = teamB ? teamB.captainId : null;
 
   if (!teamA || !teamB || !teamACaptainId || !teamBCaptainId) {
-    await interaction.reply({
+    await interaction.editReply({
       content:
         "Ensure both teams are initialized and have captains before starting the pick/ban process. Run /initialize first.",
-      flags: MessageFlags.Ephemeral,
     });
     return;
   }
