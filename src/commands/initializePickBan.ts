@@ -107,22 +107,6 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
         deny: [PermissionFlagsBits.ViewChannel],
       },
       {
-        id: teamARoleId,
-        allow: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.SendMessages,
-          PermissionFlagsBits.ReadMessageHistory,
-        ],
-      },
-      {
-        id: teamBRoleId,
-        allow: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.SendMessages,
-          PermissionFlagsBits.ReadMessageHistory,
-        ],
-      },
-      {
         id: teamACaptainId,
         type: OverwriteType.Member,
         allow: [
